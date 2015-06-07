@@ -28,7 +28,6 @@ I wanted to use the same hue from phyla downwards and then for each phylum use a
 ## Load packages
 ```{r}
 ## idea to make an overall palette where the phyla will be vibrant dinstinct colours and then the orders will be distinct colours within that. 
-#library(reshape2)
 library(caret)
 library(colorspace)
 ```
