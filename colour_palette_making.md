@@ -1,11 +1,6 @@
----
-title: "Making a colour palette for multiple taxonomic levels"
-author: "Julia Gustavsen"
-date: "06/06/2015"
-output:
-  html_document:
-    keep_md: yes
----
+# Making a colour palette for multiple taxonomic levels
+Julia Gustavsen  
+06/06/2015  
 
 # Overall motivation:
 I wanted to pick many related colours from one colour. 
@@ -26,10 +21,19 @@ I wanted to use the same hue from phyla downwards and then for each phylum use a
 
 
 ## Load packages
-```{r}
+
+```r
 ## idea to make an overall palette where the phyla will be vibrant dinstinct colours and then the orders will be distinct colours within that. 
 #library(reshape2)
 library(caret)
+```
+
+```
+## Loading required package: lattice
+## Loading required package: ggplot2
+```
+
+```r
 library(colorspace)
 ```
 
@@ -39,13 +43,15 @@ library(colorspace)
 The taxonomy was done using the classifier in mothur (http://www.mothur.org/) and here I have an the first 10 000 lines of a file of the overall taxonomic classification from a few different studies. I will try to make overall palettes that will work across different projects. 
 
 These are eukaryotic data (18S amplicons). 
-``` {r}
+
+```r
 split_up_taxonomy <- read.csv2("./Total_taxonomy_mapped.csv", col.names=c("header_id","otu_number","Domain","Phylum", "Class", "Order", "Family","Genus"))
 ```
 
 The file needs to be parsed a bit since I have left all of the confidence values associated with the assignment. These will be used in other analysis, but not here, so let's split up the columns and remove the confidence values. 
 
-```{r}
+
+```r
 split_up_taxonomy$Domain <- sub("\\(.{1,4}\\)", "", split_up_taxonomy$Domain)
 split_up_taxonomy$Phylum <- sub("\\(.{1,4}\\)", "", split_up_taxonomy$Phylum)
 split_up_taxonomy$Class <- sub("\\(.{1,4}\\)", "", split_up_taxonomy$Class)
@@ -58,16 +64,24 @@ split_up_taxonomy$Genus <- gsub(";", "", split_up_taxonomy$Genus)
 
 These should just be eukaryotic data, so let's filter out anything that is not in the domain Eukaryota (universal primers can pick up such things). And let's look to see what we have for phyla. 
 
-```{r}
+
+```r
 split_up_taxonomy_euks <- droplevels(subset(split_up_taxonomy, Domain == "Eukaryota"))
 sort(unique(split_up_taxonomy_euks$Phylum))
+```
+
+```
+## [1] "Amoebozoa"      "Archaeplastida" "Cryptophyceae"  "Excavata"      
+## [5] "Haptophyta"     "Opisthokonta"   "Picozoa"        "SA1-3C06"      
+## [9] "SAR"
 ```
 
 
 I usually try to pick colours from `RcolorBrewer()`, but I really like the [I want Hue site](http://tools.medialab.sciences-po.fr/iwanthue/). I played around and came up with a palette I liked based on the number of phyla I found (n=9).
 
 So copied from the web I have: 
-```{r}
+
+```r
 phyla_palette_euks <- c("#585671",
  "#E99449",
  "#023D8D",
@@ -81,21 +95,33 @@ phyla_palette_euks <- c("#585671",
 
 Make this a named vector (useful for plotting down the road and for keeping track of the colours) and add black as the colour for anything that will come up as unclassified. 
 
-``` {r}
+
+```r
 names(phyla_palette_euks) <- sort(unique(split_up_taxonomy_euks$Phylum))
  phyla_palette_euks <- c(phyla_palette_euks,"black")
  names(phyla_palette_euks)[length(phyla_palette_euks)] <- "unclassified"
 phyla_palette_euks
 ```
 
+```
+##      Amoebozoa Archaeplastida  Cryptophyceae       Excavata     Haptophyta 
+##      "#585671"      "#E99449"      "#023D8D"      "#D16477"      "#0AC757" 
+##   Opisthokonta        Picozoa       SA1-3C06            SAR   unclassified 
+##      "#6CC5CE"      "#A575CF"      "#6B813B"      "#DE2BA2"        "black"
+```
+
 Let's take a quick look at the palette:
-```{r}
+
+```r
 par(oma=c(3,1,0,0)) ## so plots are not clipped
 barplot(seq(length(phyla_palette_euks)), col=phyla_palette_euks, names.arg=names(phyla_palette_euks), las=2)
 ```
 
+![](colour_palette_making_files/figure-html/unnamed-chunk-7-1.png) 
+
 I'm happy with this. I will save it for use with other scripts. 
-``` {r}
+
+```r
 save(phyla_palette_euks, file = "./phyla_palette_euks.txt")
 ### To load it in uncomment this:
 #load(file="./phyla_palette_euks.txt")
@@ -105,7 +131,8 @@ Now to use this palette to pick colours for the class level. E.g. I want any cla
 
 I made a function to attempt to do this:
 
-``` {r}
+
+```r
 ## This function can be used as a one-off to pick a group of colours from one phylum that is supplied, or it can be used as a loop to do it a bit more programmatically. 
 
 pick_class_colours <- function (split_up_taxonomy, Phylum_name, phylum_colour) {
@@ -153,7 +180,8 @@ pick_class_colours <- function (split_up_taxonomy, Phylum_name, phylum_colour) {
 ```
 
 Now use this function to get a palette for all the classes. 
-```{r}
+
+```r
 class_palette_euks <- c()
 for (x in seq(length(unique(split_up_taxonomy_euks$Phylum)))){
   colours_by_ind_class <- pick_class_colours(split_up_taxonomy_euks, names(phyla_palette_euks[x]),phyla_palette_euks[x])
@@ -166,17 +194,34 @@ names(class_palette_euks)[length(class_palette_euks)] <- "unclassified"
 class_palette_euks
 ```
 
+```
+## Schizoplasmodiida              WIM5    Chloroplastida      Rhodophyceae 
+##         "#3A30BF"         "#302F3E"         "#3E2610"         "#BFA690" 
+##  Kathablepharidae   Cryptomonadales        Goniomonas           Discoba 
+##         "#151E2A"         "#154381"         "#B3C2D6"         "#3E2F32" 
+##        Metamonada  Prymnesiophyceae               T58    Pavlovophyceae 
+##         "#BF3049"         "#3E7E58"         "#072914"         "#B2D5C0" 
+##           Holozoa       Nucletmycea           Picozoa     Stramenopiles 
+##         "#2FB3C1"         "#303E40"         "#A575CF"         "#29071D" 
+##         Alveolata          Rhizaria      unclassified 
+##         "#D56CB2"         "#7E6A77"           "black"
+```
+
 Let's have a look at this one:
-``` {r}
+
+```r
 par(oma=c(3,1,0,0)) ## so plots are not clipped
 barplot(seq(length(class_palette_euks)), col=class_palette_euks,names.arg=names(class_palette_euks), las=2)
 ```
+
+![](colour_palette_making_files/figure-html/unnamed-chunk-11-1.png) 
  
 You can see that many classes are split up into similar colours and some, like Picozoa, remain the same colour
 
 
 Save this palette:
-```{r}
+
+```r
 save(class_palette_euks, file = "./class_palette_euks.txt")
 ## load(file="./class_palette_euks.txt")
 ```
