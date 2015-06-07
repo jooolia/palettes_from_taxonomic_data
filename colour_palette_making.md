@@ -5,7 +5,7 @@ Julia Gustavsen
 # Overall motivation:
 I wanted to pick many related colours from one colour. 
 
-## More specific motivatation: 
+## More specific motivation: 
 I wanted to standardize my colour scheme that I am using for density plots, line graphs and other plots for some microbial data that is taxonomically assigned (e.g. 18S and 16S). It drives me nuts how often I see plots of taxonomic data that are not consistent between projects or even within projects. 
 
 This is my attempt to pick some colour palettes at the Class level from a palette I worked out at the phylum level from the [IwantHue site](http://tools.medialab.sciences-po.fr/iwanthue/). I will use the functions describe here to also do this for order and family levels. 
