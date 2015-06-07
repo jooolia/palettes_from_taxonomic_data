@@ -24,7 +24,6 @@ I wanted to use the same hue from phyla downwards and then for each phylum use a
 
 ```r
 ## idea to make an overall palette where the phyla will be vibrant dinstinct colours and then the orders will be distinct colours within that. 
-#library(reshape2)
 library(caret)
 ```
 
@@ -196,15 +195,15 @@ class_palette_euks
 
 ```
 ## Schizoplasmodiida              WIM5    Chloroplastida      Rhodophyceae 
-##         "#3A30BF"         "#302F3E"         "#3E2610"         "#BFA690" 
+##         "#313040"         "#3A2FC1"         "#403730"         "#C1732F" 
 ##  Kathablepharidae   Cryptomonadales        Goniomonas           Discoba 
-##         "#151E2A"         "#154381"         "#B3C2D6"         "#3E2F32" 
+##         "#B4C2D6"         "#07162A"         "#415C81"         "#BF2F48" 
 ##        Metamonada  Prymnesiophyceae               T58    Pavlovophyceae 
-##         "#BF3049"         "#3E7E58"         "#072914"         "#B2D5C0" 
+##         "#3E2F32"         "#158141"         "#232A26"         "#6CD697" 
 ##           Holozoa       Nucletmycea           Picozoa     Stramenopiles 
-##         "#2FB3C1"         "#303E40"         "#A575CF"         "#29071D" 
+##         "#2F3D3E"         "#30B2BF"         "#A575CF"         "#81406B" 
 ##         Alveolata          Rhizaria      unclassified 
-##         "#D56CB2"         "#7E6A77"           "black"
+##         "#2A071E"         "#D6B3CA"           "black"
 ```
 
 Let's have a look at this one:
