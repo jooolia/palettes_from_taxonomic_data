@@ -119,6 +119,7 @@ pick_class_colours <- function (split_up_taxonomy, Phylum_name, phylum_colour) {
   ## if in the phylum I only found 1 class I will keep the same colour for the class as the phylum. 
   if (Count_class == 1){
     new_hex <- phylum_colour
+    names(new_hex) <- sort(unique(split_up_taxonomy_specific$Class))
     colour_vector <- c(colour_vector,new_hex)
     }
   ## otherwise let's pick a bunch of related colours (of the same hue):
@@ -171,7 +172,7 @@ par(oma=c(3,1,0,0)) ## so plots are not clipped
 barplot(seq(length(class_palette_euks)), col=class_palette_euks,names.arg=names(class_palette_euks), las=2)
 ```
  
-You can see that many classes are split up into similar colours and some, like Picozoa, remain the same colour
+You can see that many classes are split up into similar colours and some, like class Picomonadea (phylum Picozoa), remain the same colour
 
 
 Save this palette:

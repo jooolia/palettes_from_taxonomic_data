@@ -146,6 +146,7 @@ pick_class_colours <- function (split_up_taxonomy, Phylum_name, phylum_colour) {
   ## if in the phylum I only found 1 class I will keep the same colour for the class as the phylum. 
   if (Count_class == 1){
     new_hex <- phylum_colour
+    names(new_hex) <- sort(unique(split_up_taxonomy_specific$Class))
     colour_vector <- c(colour_vector,new_hex)
     }
   ## otherwise let's pick a bunch of related colours (of the same hue):
@@ -195,15 +196,15 @@ class_palette_euks
 
 ```
 ## Schizoplasmodiida              WIM5    Chloroplastida      Rhodophyceae 
-##         "#313040"         "#3A2FC1"         "#403730"         "#C1732F" 
+##         "#131040"         "#9591C1"         "#C1A791"         "#402610" 
 ##  Kathablepharidae   Cryptomonadales        Goniomonas           Discoba 
-##         "#B4C2D6"         "#07162A"         "#415C81"         "#BF2F48" 
+##         "#154381"         "#6A98D6"         "#23262A"         "#401018" 
 ##        Metamonada  Prymnesiophyceae               T58    Pavlovophyceae 
-##         "#3E2F32"         "#158141"         "#232A26"         "#6CD697" 
-##           Holozoa       Nucletmycea           Picozoa     Stramenopiles 
-##         "#2F3D3E"         "#30B2BF"         "#A575CF"         "#81406B" 
+##         "#C1919A"         "#157E40"         "#222925"         "#6CD596" 
+##           Holozoa       Nucletmycea       Picomonadea     Stramenopiles 
+##         "#303E40"         "#2FB3C1"         "#A575CF"         "#2A2328" 
 ##         Alveolata          Rhizaria      unclassified 
-##         "#2A071E"         "#D6B3CA"           "black"
+##         "#D66CB3"         "#81155D"           "black"
 ```
 
 Let's have a look at this one:
@@ -215,7 +216,7 @@ barplot(seq(length(class_palette_euks)), col=class_palette_euks,names.arg=names(
 
 ![](colour_palette_making_files/figure-html/unnamed-chunk-11-1.png) 
  
-You can see that many classes are split up into similar colours and some, like Picozoa, remain the same colour
+You can see that many classes are split up into similar colours and some, like class Picomonadea (phylum Picozoa), remain the same colour
 
 
 Save this palette:
